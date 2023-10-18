@@ -285,7 +285,9 @@ class Connect:
 
     def __make_cache_key(self, db_conf: Union[str, dict]) -> Hashable:
         if isinstance(db_conf, dict):
-            return tuple(db_conf.items())
+            return tuple(
+                [(k, v) if not isinstance(v, dict) else (k, tuple(v.items())) for k, v in db_conf.items()]
+            )  #  tuple(db_conf.items())
         return db_conf
 
 
