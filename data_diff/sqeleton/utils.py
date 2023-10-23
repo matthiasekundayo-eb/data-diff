@@ -33,7 +33,9 @@ class WeakCache:
 
     def _hashable_key(self, k: Union[dict, Hashable]) -> Hashable:
         if isinstance(k, dict):
-            return tuple(k.items())
+            return tuple(
+                [(key, value) if not isinstance(value, dict) else (key, tuple(value.items())) for key, value in k.items()]
+            )
         return k
 
     def add(self, key: Union[dict, Hashable], value: Any):
